@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: karla, sans-serif;
+  background-color: #fff;
+  color: #222;
+}
+
+.dark body, body.dark {
+  background-color: #18181b;
+  color: #e5e7eb;
+}
+
