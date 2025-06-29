@@ -12,34 +12,31 @@ const formatOptionLabel = ({ label, icon }) => (
   </div>
 );
 
-const LanguagesDropdown = ({ onSelectChange, selectedLanguage, darkMode }) => {
-    // Dynamically adjust styles for dark/light mode
+const LanguagesDropdown = ({ onSelectChange, selectedLanguage }) => {
+    // Use only light (default) theme styles
     const themedStyles = {
         ...customStyles,
         control: (styles) => ({
             ...customStyles.control(styles),
-            backgroundColor: darkMode ? '#1a202c' : '#FFF',
-            color: darkMode ? '#f3f4f6' : '#000',
-            borderColor: darkMode ? '#374151' : '#d1d5db',
+            backgroundColor: '#FFF',
+            color: '#000',
+            borderColor: '#d1d5db',
         }),
         option: (styles, { data, isFocused, isSelected }) => {
             const languageColors = {
-                javascript: darkMode ? '#f7e018' : '#fffbe7',
-                java21: darkMode ? '#e76f00' : '#fff3e6',
-                'python3.11': darkMode ? '#3572A5' : '#e6f0fa',
-                c: darkMode ? '#5555ff' : '#e6eaff',
-                cpp: darkMode ? '#00599c' : '#e6f3fa',
+                javascript: '#fffbe7',
+                java21: '#fff3e6',
+                'python3.11': '#e6f0fa',
+                c: '#e6eaff',
+                cpp: '#e6f3fa',
             };
             const bgColor = isSelected
-                ? (darkMode ? '#2563eb' : '#4169e1')
+                ? '#4169e1'
                 : isFocused
-                ? (darkMode ? '#374151' : '#e7e7e7')
-                : (languageColors[data.value] || (darkMode ? '#1a202c' : '#fff'));
-            // Ensure text is always readable
-            let textColor = '#000'; // Always use black for language names
-            if (darkMode) {
-                textColor = '#f3f4f6';
-            } else if (isSelected || isFocused) {
+                ? '#e7e7e7'
+                : (languageColors[data.value] || '#fff');
+            let textColor = '#000';
+            if (isSelected || isFocused) {
                 textColor = '#fff';
             } else if (["javascript", "java21", "c", "cpp", "python3.11"].includes(data.value)) {
                 textColor = '#222';
@@ -49,31 +46,32 @@ const LanguagesDropdown = ({ onSelectChange, selectedLanguage, darkMode }) => {
                 backgroundColor: bgColor,
                 color: textColor,
                 fontWeight: isSelected ? 700 : 500,
-                textShadow: darkMode ? '0 1px 2px #0008' : 'none',
+                textShadow: 'none',
             };
         },
         menu: (styles) => ({
             ...customStyles.menu(styles),
-            backgroundColor: darkMode ? '#1a202c' : '#fff',
-            color: darkMode ? '#f3f4f6' : '#000',
+            backgroundColor: '#fff',
+            color: '#000',
         }),
         placeholder: (styles) => ({
             ...customStyles.placeholder(styles),
-            color: darkMode ? '#9ca3af' : '#000',
+            color: '#000',
         }),
         singleValue: (styles) => ({
             ...styles,
-            color: darkMode ? '#f3f4f6' : '#000',
+            color: '#000',
         }),
     };
     return (
         <Select
-            placeholder={`Filter By Category`}
+            placeholder="Filter By Category"
             options={languageOptions}
             styles={themedStyles}
             value={selectedLanguage}
             onChange={(selectedOption) => onSelectChange(selectedOption)}
             formatOptionLabel={formatOptionLabel}
+            className="p-2 rounded border outline-none transition-colors duration-300 bg-white text-gray-900 border-gray-300"
         />
     );
 };

@@ -30,7 +30,7 @@ int main() {
     printf("Hello World!\n");
     return 0;
 }`;
-const jsDefault = `console.log('Hello, World!');`;
+const jsDefault = console.log('Hello, World!');;
 
 function getDefaultCode(lang) {
     switch (lang?.value) {
@@ -52,13 +52,13 @@ function getDefaultCode(lang) {
     }
 }
 
-const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
+const Landing = () => {
     const [language, setLanguage] = useState(languageOptions[0]);
     const [code, setCode] = useState(getDefaultCode(language));
     const [customInput, setCustomInput] = useState("");
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar closed by default
 
     const enterPress = useKeyPress("Enter");
     const ctrlPress = useKeyPress("Control");
@@ -121,7 +121,7 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
                 if (status === 429) {
                     console.log("too many requests", status);
                     showErrorToast(
-                        `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
+                        "Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!",
                         10000
                     );
                 }
@@ -152,7 +152,7 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
             } else {
                 setProcessing(false);
                 setOutputDetails(response.data);
-                showSuccessToast(`Compiled Successfully!`);
+                showSuccessToast("Compiled Successfully!");
                 console.log("response.data", response.data);
                 return;
             }
@@ -164,7 +164,7 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
     };
 
     const showSuccessToast = (msg) => {
-        toast.success(msg || `Compiled Successfully!`, {
+        toast.success(msg || "Compiled Successfully!", {
             position: "top-right",
             autoClose: 1000,
             hideProgressBar: false,
@@ -175,7 +175,7 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
         });
     };
     const showErrorToast = (msg, timer) => {
-        toast.error(msg || `Something went wrong! Please try again.`, {
+        toast.error(msg || "Something went wrong! Please try again.", {
             position: "top-right",
             autoClose: timer ? timer : 1000,
             hideProgressBar: false,
@@ -199,7 +199,9 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
           draggable
           pauseOnHover
         />
-        <div className={`flex h-screen overflow-hidden transition-all duration-500 ease-in-out ${sidebarOpen ? 'pl-56' : 'pl-0'}`}>
+        <div
+          className={`flex h-screen overflow-hidden transition-all duration-500 ease-in-out ${sidebarOpen ? 'pl-56' : 'pl-0'} flex-col md:flex-row bg-white`}
+        >
           {/* Sidebar toggle button */}
           {!sidebarOpen && (
             <button
@@ -215,23 +217,20 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
             onSelectLanguage={onSelectChange} 
             isOpen={sidebarOpen} 
             onClose={() => setSidebarOpen(false)} 
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
           />
           <div className="flex-1 flex flex-col overflow-auto">
-            <div className="flex flex-row justify-center items-center mt-4 mb-2 gap-4">
-              <LanguagesDropdown onSelectChange={onSelectChange} selectedLanguage={language} darkMode={darkMode} />
+            <div className="flex flex-col md:flex-row justify-center items-center mt-4 mb-2 gap-4">
+              <LanguagesDropdown onSelectChange={onSelectChange} selectedLanguage={language} />
             </div>
-            <div className="flex flex-row gap-4 items-start px-4 py-4 h-full">
-              <div className="flex flex-col w-full max-w-3xl h-full justify-start items-end">
+            <div className="flex flex-col md:flex-row gap-4 items-start px-2 sm:px-4 py-2 sm:py-4 h-full">
+              <div className="flex flex-col w-full md:max-w-3xl h-full justify-start items-end">
                 <CodeEditorWindow
                   code={code}
                   onChange={onChange}
                   language={language?.value}
-                  theme={editorTheme}
                 />
               </div>
-              <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
+              <div className="right-container flex flex-shrink-0 w-full md:w-[30%] flex-col mt-4 md:mt-0">
                 <OutputWindow outputDetails={outputDetails} />
                 <div className="flex flex-col items-end">
                   <CustomInput customInput={customInput} setCustomInput={setCustomInput} />
@@ -256,7 +255,7 @@ const Landing = ({ editorTheme, darkMode, setDarkMode }) => {
                   <button
                     onClick={handleCompile}
                     disabled={!code}
-                    className={`bg-blue-500 text-white font-semibold hover:bg-blue-600 mt-5 py-2 px-4 border border-blue-700 hover:border-blue-800 rounded transition-transform duration-200 ease-in-out transform hover:scale-105 active:scale-95 shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center min-w-[220px]`}
+                    className="bg-blue-500 text-white font-semibold hover:bg-blue-600 mt-5 py-2 px-4 border border-blue-700 hover:border-blue-800 rounded transition-transform duration-200 ease-in-out transform hover:scale-105 active:scale-95 shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center min-w-[180px] sm:min-w-[220px] text-sm sm:text-base"
                   >
                     {processing ? (
                       <>
